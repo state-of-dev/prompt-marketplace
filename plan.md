@@ -32,6 +32,21 @@
 
 **Siguiente:** Actualizar page.tsx para usar nuevos componentes
 
+### Actualización Page Principal
+**Propuesta:** Refactorizar page.tsx a componentes separados
+**Estado:** ✅ APROBADO
+**Cambios realizados:**
+- `refactor: usar componentes separados en page principal` (commit 5409c0e)
+**Resultado:** Page.tsx simplificado de 329 líneas a 15 líneas
+**Push:** ✅ Completado a rama dev
+
+### Componentes Prompt-Details Creados
+**Propuesta:** Crear componentes separados para prompt-details
+**Estado:** ✅ EN PROGRESO
+**Cambios realizados:**
+- Creados: prompt-header.tsx, prompt-stats.tsx, prompt-content.tsx, author-card.tsx, ai-tool-card.tsx
+**Siguiente:** Actualizar página prompt-details para usar nuevos componentes
+
 ---
 
 *Pendiente de continuar...*
