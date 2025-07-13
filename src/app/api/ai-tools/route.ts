@@ -21,7 +21,8 @@ export async function GET() {
     })
 
     // Agrupar por tipo
-    const groupedTools = aiTools.reduce((acc, tool) => {
+    type ToolWithCount = typeof aiTools[0] & { promptCount: number }
+    const groupedTools = aiTools.reduce((acc: Record<string, ToolWithCount[]>, tool) => {
       const type = tool.type
       if (!acc[type]) {
         acc[type] = []
@@ -31,7 +32,7 @@ export async function GET() {
         promptCount: tool._count.prompts,
       })
       return acc
-    }, {} as Record<string, Array<typeof aiTools[0] & { promptCount: number }>>)
+    }, {})
 
     return NextResponse.json({
       tools: aiTools.map(tool => ({
