@@ -47,6 +47,27 @@
 - Creados: prompt-header.tsx, prompt-stats.tsx, prompt-content.tsx, author-card.tsx, ai-tool-card.tsx
 **Siguiente:** Actualizar página prompt-details para usar nuevos componentes
 
+### Refactorización Prompt-Details Completada
+**Propuesta:** Usar componentes separados en prompt-details
+**Estado:** ✅ APROBADO
+**Cambios realizados:**
+- `refactor: usar componentes separados en prompt-details` (commit d57dc15)
+- `fix: remover imports no usados eslint` (commit a537fde)
+**Resultado:** Página simplificada de 318 líneas a 67 líneas
+**Push:** ✅ Completado a rama dev
+
+### Configuración Vercel Auto-Deploy
+**Propuesta:** Conectar Vercel con GitHub para auto-deploy
+**Estado:** 🔄 EN PROGRESO
+**Plan:**
+1. ✅ Instalar Vercel CLI
+2. ✅ Arreglar errores ESLint
+3. 🔄 Configurar desde Vercel Dashboard:
+   - Proyecto dev: rama dev → ideavault-dev.vercel.app
+   - Proyecto prod: rama master → ideavault-prod.vercel.app
+
+**Siguiente:** Configurar proyectos en Vercel Dashboard
+
 ---
 
 *Pendiente de continuar...*
