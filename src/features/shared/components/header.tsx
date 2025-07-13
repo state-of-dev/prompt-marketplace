@@ -40,13 +40,15 @@ export function Header() {
               <TrendingUp className="h-4 w-4 text-emerald-500" />
               <span>Explorar</span>
             </Link>
-            <Link
-              href="#"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center space-x-1"
-            >
-              <Heart className="h-4 w-4 text-rose-500" />
-              <span>Mis Favoritos</span>
-            </Link>
+{isAuthenticated && (
+              <Link
+                href="/dashboard"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center space-x-1"
+              >
+                <Heart className="h-4 w-4 text-rose-500" />
+                <span>Dashboard</span>
+              </Link>
+            )}
           </nav>
           <div className="flex items-center space-x-3">
             <ThemeToggle />
