@@ -1,12 +1,16 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { TrendingUp, Heart, Sparkles } from 'lucide-react';
+import { TrendingUp, Heart, Sparkles, LogOut, User, Crown } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { ThemeToggle } from '../../../components/theme-toggle';
+import { useAuth } from '../../../contexts/auth-context';
+import { signIn, signOut } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Header() {
+  const { user, isAuthenticated, isPremium, isLoading } = useAuth();
   return (
     <motion.header 
       className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50"
@@ -46,10 +50,71 @@ export function Header() {
           </nav>
           <div className="flex items-center space-x-3">
             <ThemeToggle />
-            <Button className="relative overflow-hidden group">
-              <span className="relative z-10">Iniciar Sesión</span>
-              <div className="absolute inset-0 bg-primary/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
-            </Button>
+            
+            {isLoading ? (
+              <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
+            ) : isAuthenticated && user ? (
+              <div className="flex items-center space-x-3">
+                {isPremium && (
+                  <div className="flex items-center space-x-1 px-2 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full">
+                    <Crown className="h-3 w-3 text-amber-600" />
+                    <span className="text-xs font-medium text-amber-700 dark:text-amber-400">
+                      Premium
+                    </span>
+                  </div>
+                )}
+                
+                <div className="flex items-center space-x-2">
+                  {user.image ? (
+                    <Image
+                      src={user.image}
+                      alt={user.name || 'Usuario'}
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <User className="h-4 w-4 text-primary-foreground" />
+                    </div>
+                  )}
+                  
+                  <div className="hidden md:block">
+                    <p className="text-sm font-medium">
+                      {user.name || 'Usuario'}
+                    </p>
+                  </div>
+                </div>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => signOut()}
+                  className="flex items-center space-x-1"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden md:inline">Salir</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => signIn('google')}
+                >
+                  Google
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => signIn('github')}
+                  className="relative overflow-hidden group"
+                >
+                  <span className="relative z-10">GitHub</span>
+                  <div className="absolute inset-0 bg-primary/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
