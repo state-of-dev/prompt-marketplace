@@ -33,9 +33,6 @@ export default function PromptPage({ params }: PromptPageProps) {
   const aiTool = mockAITools.find(tool => tool.id === prompt.aiToolId);
   const category = mockCategories.find(cat => cat.id === prompt.categoryId);
 
-  // Simulamos que el usuario NO está logueado
-  const isLoggedIn = false;
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -50,7 +47,7 @@ export default function PromptPage({ params }: PromptPageProps) {
           {/* Main Content */}
           <div className="lg:col-span-2">
             <PromptHeader prompt={prompt} category={category} aiTool={aiTool} />
-            <PromptContent prompt={prompt} aiTool={aiTool} isLoggedIn={isLoggedIn} />
+            <PromptContent prompt={prompt} aiTool={aiTool} />
           </div>
 
           {/* Sidebar */}
