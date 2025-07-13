@@ -58,15 +58,31 @@
 
 ### Configuración Vercel Auto-Deploy
 **Propuesta:** Conectar Vercel con GitHub para auto-deploy
-**Estado:** 🔄 EN PROGRESO
-**Plan:**
-1. ✅ Instalar Vercel CLI
-2. ✅ Arreglar errores ESLint
-3. 🔄 Configurar desde Vercel Dashboard:
-   - Proyecto dev: rama dev → ideavault-dev.vercel.app
-   - Proyecto prod: rama master → ideavault-prod.vercel.app
+**Estado:** ✅ COMPLETADO
+**Cambios realizados:**
+- `fix: corregir tipos typescript en mock data` (commit a34b78a)
+**Resultado:** Deploy automático configurado y funcionando
+- ✅ Master sincronizado con código limpio
+- ✅ Deploy automático en ambas ramas activo
+- ✅ Tipos TypeScript corregidos
 
-**Siguiente:** Configurar proyectos en Vercel Dashboard
+**Siguiente:** Configurar proyecto dev en Vercel Dashboard para rama dev
+
+### Sistema de Autenticación NextAuth.js
+**Propuesta:** Implementar autenticación con Google/GitHub
+**Estado:** 🔄 EN PROGRESO
+**Cambios realizados:**
+- `config: instalar nextauth dependencies` (commit f181bd8)
+**Plan de commits:**
+1. ✅ Instalar dependencias NextAuth
+2. 🔄 Configurar providers (Google/GitHub)
+3. ⏳ Crear context autenticación
+4. ⏳ Actualizar header con estado usuario
+5. ⏳ Implementar protección contenido premium
+6. ⏳ Estilos autenticación
+7. ⏳ Actualizar prompt-details con auth
+
+**Siguiente:** Configurar NextAuth providers
 
 ---
 
