@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Search, TrendingUp, Users, Zap, BarChart3, Clock } from 'lucide-react';
-import { Button } from '../../../components/ui/button';
+import { Search, Users, Zap, BarChart3, Clock } from 'lucide-react';
 import { Input } from '../../../components/ui/input';
 import { Badge } from '../../../components/ui/badge';
 

@@ -47,7 +47,7 @@ export function PromptsGrid() {
           whileInView="animate"
           viewport={{ once: true }}
         >
-          {mockPrompts.map((prompt, index) => {
+          {mockPrompts.map((prompt) => {
             const aiTool = mockAITools.find(tool => tool.id === prompt.aiToolId);
             const category = mockCategories.find(cat => cat.id === prompt.categoryId);
             

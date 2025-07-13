@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Search, Eye, ArrowRight, Code2, Palette, Megaphone, Camera, BookOpen, Calculator } from 'lucide-react';
 import { mockCategories } from '../../../data/mock';
 import { Button } from '../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../components/ui/card';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -57,7 +57,7 @@ export function CategoriesSection() {
           whileInView="animate"
           viewport={{ once: true }}
         >
-          {mockCategories.slice(0, 3).map((category, index) => {
+          {mockCategories.slice(0, 3).map((category) => {
             const IconComponent = categoryIcons[category.id as keyof typeof categoryIcons] || Code2;
             return (
               <motion.div key={category.id} variants={fadeInUp}>
