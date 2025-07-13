@@ -6,10 +6,230 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// Users table - compatible with NextAuth
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String    @unique
+  name          String?
+  image         String?
+  isPremium     Boolean   @default(false)
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  prompts       Prompt[]
+  collections   Collection[]
+  activities    UserActivity[]
+  subscriptions Subscription[]
+  
+  // NextAuth
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+// NextAuth required tables
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+// Categories
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  emoji       String
+  description String
+  promptCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  subcategories Subcategory[]
+  prompts       Prompt[]
+
+  @@map("categories")
+}
+
+model Subcategory {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  promptCount Int      @default(0)
+  categoryId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  prompts  Prompt[]
+
+  @@map("subcategories")
+}
+
+// AI Tools
+model AITool {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  type        String   // 'chatbot' | 'ide' | 'cli' | 'generative' | 'specialized'
+  description String
+  website     String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  prompts Prompt[]
+
+  @@map("ai_tools")
+}
+
+// Prompts - Main entity
+model Prompt {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  content       String   @db.Text
+  preview       String
+  isPublic      Boolean  @default(true)
+  isPremium     Boolean  @default(false)
+  price         Float?
+  tags          String[]
+  likes         Int      @default(0)
+  copies        Int      @default(0)
+  views         Int      @default(0)
+  categoryId    String
+  subcategoryId String
+  aiToolId      String
+  authorId      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  category    Category    @relation(fields: [categoryId], references: [id])
+  subcategory Subcategory @relation(fields: [subcategoryId], references: [id])
+  aiTool      AITool      @relation(fields: [aiToolId], references: [id])
+  author      User        @relation(fields: [authorId], references: [id])
+  activities  UserActivity[]
+  
+  // Many-to-many with collections
+  collections PromptCollection[]
+
+  @@map("prompts")
+}
+
+// Collections
+model Collection {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  isPremium   Boolean  @default(false)
+  price       Float?
+  isPublic    Boolean  @default(true)
+  tags        String[]
+  subscribers Int      @default(0)
+  authorId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  author  User                @relation(fields: [authorId], references: [id])
+  prompts PromptCollection[]
+
+  @@map("collections")
+}
+
+// Junction table for prompts and collections
+model PromptCollection {
+  id           String     @id @default(cuid())
+  promptId     String
+  collectionId String
+  addedAt      DateTime   @default(now())
+
+  // Relations
+  prompt     Prompt     @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@unique([promptId, collectionId])
+  @@map("prompt_collections")
+}
+
+// User activities (likes, copies, views, etc.)
+model UserActivity {
+  id        String   @id @default(cuid())
+  type      String   // 'like' | 'copy' | 'favorite' | 'view'
+  userId    String
+  promptId  String
+  createdAt DateTime @default(now())
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, promptId, type])
+  @@map("user_activities")
+}
+
+// Subscriptions (premium, collections, authors)
+model Subscription {
+  id           String    @id @default(cuid())
+  type         String    // 'collection' | 'author' | 'premium'
+  status       String    // 'active' | 'cancelled' | 'expired'
+  price        Float
+  userId       String
+  collectionId String?
+  authorId     String?
+  startDate    DateTime  @default(now())
+  endDate      DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
 }
