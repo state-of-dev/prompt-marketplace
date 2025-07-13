@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { mockPrompts } from '@/data/mock'
 
 // GET /api/prompts - Obtener prompts con filtros
 export async function GET(request: NextRequest) {
@@ -86,10 +87,18 @@ export async function GET(request: NextRequest) {
       hasMore,
     })
   } catch (error) {
-    console.error('Error fetching prompts:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    console.error('Error fetching prompts, using mock data:', error)
+    
+    // Fallback a datos mock si la BD no está disponible
+    const limit = parseInt(new URL(request.url).searchParams.get('limit') || '12')
+    const mockData = mockPrompts.slice(0, limit)
+    
+    return NextResponse.json({
+      data: mockData,
+      total: mockData.length,
+      page: 1,
+      limit,
+      hasMore: false,
+    })
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { mockAITools } from '@/data/mock'
 
 // GET /api/ai-tools - Obtener todas las herramientas IA
 export async function GET() {
@@ -42,10 +43,21 @@ export async function GET() {
       grouped: groupedTools,
     })
   } catch (error) {
-    console.error('Error fetching AI tools:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    console.error('Error fetching AI tools, using mock data:', error)
+    
+    // Fallback a datos mock si la BD no está disponible
+    const groupedTools = mockAITools.reduce((acc: Record<string, typeof mockAITools>, tool) => {
+      const type = tool.type
+      if (!acc[type]) {
+        acc[type] = []
+      }
+      acc[type].push(tool)
+      return acc
+    }, {})
+    
+    return NextResponse.json({
+      tools: mockAITools,
+      grouped: groupedTools,
+    })
   }
 }
