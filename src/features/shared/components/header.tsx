@@ -102,16 +102,16 @@ export function Header() {
                   variant="outline"
                   size="sm"
                   onClick={() => signIn('google')}
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
                 >
                   Google
                 </Button>
                 <Button
                   size="sm"
                   onClick={() => signIn('github')}
-                  className="relative overflow-hidden group"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
                 >
-                  <span className="relative z-10">GitHub</span>
-                  <div className="absolute inset-0 bg-primary/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                  GitHub
                 </Button>
               </div>
             )}

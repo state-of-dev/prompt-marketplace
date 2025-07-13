@@ -167,7 +167,7 @@ export function PromptsGrid() {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <Button size="lg" className="group">
+          <Button size="lg" className="group bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700">
             Ver todos los prompts
             <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>

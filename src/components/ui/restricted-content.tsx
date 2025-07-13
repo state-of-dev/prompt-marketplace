@@ -42,7 +42,7 @@ export function RestrictedContent({
             <Button 
               onClick={() => signIn('google')}
               size="sm"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
             >
               <LogIn className="h-4 w-4" />
               Iniciar con Google
@@ -51,7 +51,7 @@ export function RestrictedContent({
               onClick={() => signIn('github')}
               variant="outline"
               size="sm"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
             >
               <LogIn className="h-4 w-4" />
               Iniciar con GitHub
@@ -79,7 +79,7 @@ export function RestrictedContent({
           </p>
           <Button 
             size="sm"
-            className="bg-amber-600 hover:bg-amber-700 text-white"
+            className="bg-amber-600 hover:bg-amber-700 text-white dark:bg-amber-500 dark:hover:bg-amber-600"
           >
             <Crown className="h-4 w-4 mr-2" />
             Obtener Premium
