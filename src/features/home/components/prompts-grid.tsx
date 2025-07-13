@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { Heart, Copy, Star, ArrowRight } from 'lucide-react';
-import { mockPrompts, mockAITools, mockCategories } from '../../../data/mock';
+import { usePrompts } from '../../../hooks/use-prompts';
 import { PromptPreview } from '../../../components/ui/terminal';
+import { LoadingState, ErrorState } from '../../../components/ui/loading-spinner';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
@@ -24,6 +25,51 @@ const staggerContainer = {
 };
 
 export function PromptsGrid() {
+  const { prompts, loading, error, refetch } = usePrompts({ limit: 6 });
+
+  if (loading) {
+    return (
+      <section className="py-24 bg-muted/30">
+        <div className="container">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl font-bold mb-4">Prompts Destacados</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Los prompts más populares y efectivos de nuestra comunidad
+            </p>
+          </motion.div>
+          <LoadingState>Cargando prompts destacados...</LoadingState>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-24 bg-muted/30">
+        <div className="container">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl font-bold mb-4">Prompts Destacados</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Los prompts más populares y efectivos de nuestra comunidad
+            </p>
+          </motion.div>
+          <ErrorState error={error} onRetry={refetch} />
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="py-24 bg-muted/30">
       <div className="container">
@@ -47,9 +93,7 @@ export function PromptsGrid() {
           whileInView="animate"
           viewport={{ once: true }}
         >
-          {mockPrompts.map((prompt) => {
-            const aiTool = mockAITools.find(tool => tool.id === prompt.aiToolId);
-            const category = mockCategories.find(cat => cat.id === prompt.categoryId);
+          {prompts.map((prompt) => {
             
             return (
               <motion.div key={prompt.id} variants={fadeInUp}>
@@ -77,10 +121,10 @@ export function PromptsGrid() {
                     <CardContent>
                       <div className="flex flex-wrap gap-2 mb-4">
                         <Badge className="bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800">
-                          {category?.name}
+                          {prompt.category?.name}
                         </Badge>
                         <Badge variant="outline" className="border-purple-200 text-purple-700 dark:border-purple-700 dark:text-purple-400 group-hover:border-purple-300 dark:group-hover:border-purple-600 transition-colors">
-                          {aiTool?.name}
+                          {prompt.aiTool?.name}
                         </Badge>
                       </div>
 
@@ -105,7 +149,7 @@ export function PromptsGrid() {
                         </div>
                         <span className="text-xs flex items-center space-x-1">
                           <span>por</span>
-                          <span className="font-medium group-hover:text-indigo-600 transition-colors">{prompt.author.username}</span>
+                          <span className="font-medium group-hover:text-indigo-600 transition-colors">{prompt.author?.username || prompt.author?.name}</span>
                         </span>
                       </div>
                     </CardFooter>

@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { Search, Eye, ArrowRight, Code2, Palette, Megaphone, Camera, BookOpen, Calculator } from 'lucide-react';
-import { mockCategories } from '../../../data/mock';
+import { useCategories } from '../../../hooks/use-prompts';
+import { LoadingState, ErrorState } from '../../../components/ui/loading-spinner';
 import { Button } from '../../../components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../components/ui/card';
 
@@ -30,6 +31,51 @@ const categoryIcons = {
 };
 
 export function CategoriesSection() {
+  const { categories, loading, error } = useCategories();
+
+  if (loading) {
+    return (
+      <section className="py-24">
+        <div className="container">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-between mb-12"
+          >
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Categorías Principales</h2>
+              <p className="text-muted-foreground">Encuentra prompts especializados para tu profesión</p>
+            </div>
+          </motion.div>
+          <LoadingState>Cargando categorías...</LoadingState>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-24">
+        <div className="container">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-between mb-12"
+          >
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Categorías Principales</h2>
+              <p className="text-muted-foreground">Encuentra prompts especializados para tu profesión</p>
+            </div>
+          </motion.div>
+          <ErrorState error={error} />
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="py-24">
       <div className="container">
@@ -57,7 +103,7 @@ export function CategoriesSection() {
           whileInView="animate"
           viewport={{ once: true }}
         >
-          {mockCategories.slice(0, 3).map((category) => {
+          {categories.slice(0, 3).map((category) => {
             const IconComponent = categoryIcons[category.id as keyof typeof categoryIcons] || Code2;
             return (
               <motion.div key={category.id} variants={fadeInUp}>
