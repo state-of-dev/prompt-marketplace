@@ -88,38 +88,38 @@ export const mockCategories: Category[] = [
 
 export const mockAITools: AITool[] = [
   // Chatbots
-  { id: 'chatgpt', name: 'ChatGPT', type: 'Chatbot', description: 'Modelo de lenguaje conversacional de OpenAI', website: 'https://chat.openai.com', isActive: true },
-  { id: 'claude', name: 'Claude', type: 'Chatbot', description: 'Asistente de IA conversacional de Anthropic', website: 'https://claude.ai', isActive: true },
-  { id: 'gemini', name: 'Gemini', type: 'Chatbot', description: 'Modelo de lenguaje multimodal de Google', website: 'https://gemini.google.com', isActive: true },
-  { id: 'grok', name: 'Grok', type: 'Chatbot', description: 'IA conversacional de xAI con humor', website: 'https://grok.com', isActive: true },
-  { id: 'deepseek', name: 'DeepSeek', type: 'Chatbot', description: 'Modelo de lenguaje avanzado especializado en código', isActive: true },
-  { id: 'perplexity', name: 'Perplexity', type: 'Chatbot', description: 'Motor de búsqueda potenciado por IA', website: 'https://perplexity.ai', isActive: true },
+  { id: 'chatgpt', name: 'ChatGPT', type: 'chatbot', description: 'Modelo de lenguaje conversacional de OpenAI', website: 'https://chat.openai.com', isActive: true },
+  { id: 'claude', name: 'Claude', type: 'chatbot', description: 'Asistente de IA conversacional de Anthropic', website: 'https://claude.ai', isActive: true },
+  { id: 'gemini', name: 'Gemini', type: 'chatbot', description: 'Modelo de lenguaje multimodal de Google', website: 'https://gemini.google.com', isActive: true },
+  { id: 'grok', name: 'Grok', type: 'chatbot', description: 'IA conversacional de xAI con humor', website: 'https://grok.com', isActive: true },
+  { id: 'deepseek', name: 'DeepSeek', type: 'chatbot', description: 'Modelo de lenguaje avanzado especializado en código', isActive: true },
+  { id: 'perplexity', name: 'Perplexity', type: 'chatbot', description: 'Motor de búsqueda potenciado por IA', website: 'https://perplexity.ai', isActive: true },
 
   // IDEs
-  { id: 'cursor', name: 'Cursor', type: 'Editor de Código', description: 'Editor de código impulsado por IA', website: 'https://cursor.sh', isActive: true },
-  { id: 'windsurf', name: 'Windsurf', type: 'Editor de Código', description: 'Entorno de desarrollo con IA integrada', isActive: true },
-  { id: 'github-copilot', name: 'GitHub Copilot', type: 'Editor de Código', description: 'Asistente de programación de GitHub', website: 'https://github.com/features/copilot', isActive: true },
-  { id: 'codeium', name: 'Codeium', type: 'Editor de Código', description: 'Autocompletado de código gratuito con IA', website: 'https://codeium.com', isActive: true },
-  { id: 'replit', name: 'Replit', type: 'Editor de Código', description: 'IDE online con asistente de IA', website: 'https://replit.com', isActive: true },
+  { id: 'cursor', name: 'Cursor', type: 'ide', description: 'Editor de código impulsado por IA', website: 'https://cursor.sh', isActive: true },
+  { id: 'windsurf', name: 'Windsurf', type: 'ide', description: 'Entorno de desarrollo con IA integrada', isActive: true },
+  { id: 'github-copilot', name: 'GitHub Copilot', type: 'ide', description: 'Asistente de programación de GitHub', website: 'https://github.com/features/copilot', isActive: true },
+  { id: 'codeium', name: 'Codeium', type: 'ide', description: 'Autocompletado de código gratuito con IA', website: 'https://codeium.com', isActive: true },
+  { id: 'replit', name: 'Replit', type: 'ide', description: 'IDE online con asistente de IA', website: 'https://replit.com', isActive: true },
 
   // CLI
-  { id: 'claude-code', name: 'Claude Code', type: 'Línea de Comandos', description: 'Claude optimizado para desarrollo', isActive: true },
-  { id: 'github-copilot-cli', name: 'GitHub Copilot CLI', type: 'Línea de Comandos', description: 'GitHub Copilot para terminal', isActive: true },
-  { id: 'warp-ai', name: 'Warp AI', type: 'Línea de Comandos', description: 'Terminal inteligente con IA', website: 'https://warp.dev', isActive: true },
+  { id: 'claude-code', name: 'Claude Code', type: 'cli', description: 'Claude optimizado para desarrollo', isActive: true },
+  { id: 'github-copilot-cli', name: 'GitHub Copilot CLI', type: 'cli', description: 'GitHub Copilot para terminal', isActive: true },
+  { id: 'warp-ai', name: 'Warp AI', type: 'cli', description: 'Terminal inteligente con IA', website: 'https://warp.dev', isActive: true },
 
   // Generative
-  { id: 'midjourney', name: 'Midjourney', type: 'Generación de Imágenes', description: 'Generación de imágenes artísticas con IA', website: 'https://midjourney.com', isActive: true },
-  { id: 'dalle', name: 'DALL-E', type: 'Generación de Imágenes', description: 'Generación de imágenes de OpenAI', isActive: true },
-  { id: 'stable-diffusion', name: 'Stable Diffusion', type: 'Generación de Imágenes', description: 'Generación de imágenes de código abierto', isActive: true },
-  { id: 'leonardo-ai', name: 'Leonardo AI', type: 'Generación de Imágenes', description: 'Plataforma de arte y diseño con IA', website: 'https://leonardo.ai', isActive: true },
-  { id: 'runway', name: 'Runway', type: 'Generación de Video', description: 'Herramientas creativas de IA para video', website: 'https://runway.com', isActive: true },
-  { id: 'sora', name: 'Sora', type: 'Generación de Video', description: 'Generación de videos de OpenAI', isActive: true },
-  { id: 'elevenlabs', name: 'ElevenLabs', type: 'Generación de Audio', description: 'Clonación y síntesis de voz con IA', website: 'https://elevenlabs.io', isActive: true },
+  { id: 'midjourney', name: 'Midjourney', type: 'generative', description: 'Generación de imágenes artísticas con IA', website: 'https://midjourney.com', isActive: true },
+  { id: 'dalle', name: 'DALL-E', type: 'generative', description: 'Generación de imágenes de OpenAI', isActive: true },
+  { id: 'stable-diffusion', name: 'Stable Diffusion', type: 'generative', description: 'Generación de imágenes de código abierto', isActive: true },
+  { id: 'leonardo-ai', name: 'Leonardo AI', type: 'generative', description: 'Plataforma de arte y diseño con IA', website: 'https://leonardo.ai', isActive: true },
+  { id: 'runway', name: 'Runway', type: 'generative', description: 'Herramientas creativas de IA para video', website: 'https://runway.com', isActive: true },
+  { id: 'sora', name: 'Sora', type: 'generative', description: 'Generación de videos de OpenAI', isActive: true },
+  { id: 'elevenlabs', name: 'ElevenLabs', type: 'generative', description: 'Clonación y síntesis de voz con IA', website: 'https://elevenlabs.io', isActive: true },
 
   // Specialized
-  { id: 'notion-ai', name: 'Notion AI', type: 'Especializado', description: 'Asistente de escritura integrado en Notion', website: 'https://notion.so', isActive: true },
-  { id: 'figma-ai', name: 'Figma AI', type: 'Especializado', description: 'Herramientas de diseño con IA en Figma', website: 'https://figma.com', isActive: true },
-  { id: 'canva-ai', name: 'Canva AI', type: 'Especializado', description: 'Suite de diseño automático de Canva', website: 'https://canva.com', isActive: true }
+  { id: 'notion-ai', name: 'Notion AI', type: 'specialized', description: 'Asistente de escritura integrado en Notion', website: 'https://notion.so', isActive: true },
+  { id: 'figma-ai', name: 'Figma AI', type: 'specialized', description: 'Herramientas de diseño con IA en Figma', website: 'https://figma.com', isActive: true },
+  { id: 'canva-ai', name: 'Canva AI', type: 'specialized', description: 'Suite de diseño automático de Canva', website: 'https://canva.com', isActive: true }
 ];
 
 export const mockUsers: User[] = [
