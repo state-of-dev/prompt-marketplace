@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { notFound } from 'next/navigation';
-import { mockPrompts, mockAITools, mockCategories } from '../../../data/mock';
+import { usePrompt } from '../../../hooks/use-prompts';
+import { LoadingState, ErrorState } from '../../../components/ui/loading-spinner';
 import { Header } from '../../../features/shared/components/header';
 import { PromptHeader } from '../../../features/prompt-details/components/prompt-header';
 import { PromptContent } from '../../../features/prompt-details/components/prompt-content';
@@ -24,14 +25,28 @@ const staggerContainer = {
 
 export default function PromptPage({ params }: PromptPageProps) {
   const { id } = use(params);
-  const prompt = mockPrompts.find(p => p.id === id);
-  
-  if (!prompt) {
-    notFound();
+  const { prompt, loading, error } = usePrompt(id);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <LoadingState>Cargando prompt...</LoadingState>
+      </div>
+    );
   }
 
-  const aiTool = mockAITools.find(tool => tool.id === prompt.aiToolId);
-  const category = mockCategories.find(cat => cat.id === prompt.categoryId);
+  if (error || !prompt) {
+    if (error === 'Prompt no encontrado') {
+      notFound();
+    }
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <ErrorState error={error || 'Error al cargar prompt'} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -46,14 +61,14 @@ export default function PromptPage({ params }: PromptPageProps) {
         >
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <PromptHeader prompt={prompt} category={category} aiTool={aiTool} />
-            <PromptContent prompt={prompt} aiTool={aiTool} />
+            <PromptHeader prompt={prompt} category={prompt.category} aiTool={prompt.aiTool} />
+            <PromptContent prompt={prompt} aiTool={prompt.aiTool} />
           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <AuthorCard prompt={prompt} />
-            <AIToolCard aiTool={aiTool} />
+            <AIToolCard aiTool={prompt.aiTool} />
           </div>
         </motion.div>
       </div>
