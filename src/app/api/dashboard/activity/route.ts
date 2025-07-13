@@ -47,29 +47,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(formattedActivities);
 
   } catch (error) {
-    console.error('Error fetching user activity, using mock data:', error);
-    
-    // Fallback a datos mock si la BD no está disponible
-    const mockActivities = [
-      {
-        id: '1',
-        type: 'copy',
-        action: 'Copiaste',
-        promptTitle: 'React Component Generator',
-        timestamp: new Date().toISOString(),
-        category: 'Programadores'
-      },
-      {
-        id: '2',
-        type: 'favorite',
-        action: 'Agregaste a favoritos',
-        promptTitle: 'Cinema Storyboard Creator',
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-        category: 'Cineastas'
-      }
-    ];
-
-    return NextResponse.json(mockActivities);
+    console.error('Error fetching user activity:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
   }
 }
 

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { mockCategories } from '@/data/mock'
 
 // GET /api/categories - Obtener todas las categorías
 export async function GET() {
@@ -35,9 +34,10 @@ export async function GET() {
 
     return NextResponse.json(categoriesWithCount)
   } catch (error) {
-    console.error('Error fetching categories, using mock data:', error)
-    
-    // Fallback a datos mock si la BD no está disponible
-    return NextResponse.json(mockCategories)
+    console.error('Error fetching categories:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
   }
 }

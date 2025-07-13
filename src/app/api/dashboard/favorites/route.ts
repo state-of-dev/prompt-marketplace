@@ -53,26 +53,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(favorites);
 
   } catch (error) {
-    console.error('Error fetching user favorites, using mock data:', error);
-    
-    // Fallback a datos mock si la BD no está disponible
-    const mockFavorites = [
-      {
-        id: 'prompt1',
-        title: 'React Component Generator',
-        description: 'Genera componentes React funcionales con TypeScript',
-        category: 'Programadores',
-        aiTool: 'Claude',
-        author: { name: 'John Doe', image: null },
-        likes: 234,
-        copies: 156,
-        views: 1200,
-        isPremium: false,
-        addedAt: '2025-01-10'
-      }
-    ];
-
-    return NextResponse.json(mockFavorites);
+    console.error('Error fetching user favorites:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
   }
 }
 

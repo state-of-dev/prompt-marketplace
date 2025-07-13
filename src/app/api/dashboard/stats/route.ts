@@ -66,17 +66,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(stats);
 
   } catch (error) {
-    console.error('Error fetching user stats, using mock data:', error);
-    
-    // Fallback a datos mock si la BD no está disponible
-    const mockStats = {
-      favorites: 5,
-      copies: 12,
-      views: 23,
-      popularity: 45,
-      totalActivities: 40
-    };
-
-    return NextResponse.json(mockStats);
+    console.error('Error fetching user stats:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
   }
 }
