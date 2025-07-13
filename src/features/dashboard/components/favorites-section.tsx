@@ -4,48 +4,37 @@ import { Card } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
 import { Heart, Copy, Eye, ExternalLink } from 'lucide-react';
+import { LoadingSpinner } from '../../../components/ui/loading-spinner';
+import { useDashboard } from '../../../hooks/use-dashboard';
 import Link from 'next/link';
 
 export function FavoritesSection() {
-  // TODO: Estos datos vendrán de la API
-  const favoritePrompts = [
-    {
-      id: 'prompt1',
-      title: 'React Component Generator',
-      description: 'Genera componentes React funcionales con TypeScript',
-      category: 'Programadores',
-      aiTool: 'Claude',
-      likes: 234,
-      copies: 156,
-      views: 1200,
-      isPremium: false,
-      addedAt: '2025-01-10'
-    },
-    {
-      id: 'prompt2', 
-      title: 'Cinema Storyboard Creator',
-      description: 'Crea storyboards detallados para escenas cinematográficas',
-      category: 'Cineastas',
-      aiTool: 'DALL-E',
-      likes: 189,
-      copies: 89,
-      views: 850,
-      isPremium: true,
-      addedAt: '2025-01-08'
-    },
-    {
-      id: 'prompt3',
-      title: 'Marketing Copy Template',
-      description: 'Plantillas para copy de marketing digital efectivo',
-      category: 'Marketers',
-      aiTool: 'ChatGPT',
-      likes: 312,
-      copies: 234,
-      views: 1560,
-      isPremium: false,
-      addedAt: '2025-01-05'
-    }
-  ];
+  const { favorites, loading, error, removeFavorite, trackActivity } = useDashboard();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="p-6 text-center">
+        <p className="text-destructive">{error}</p>
+      </Card>
+    );
+  }
+
+  const handleCopy = async (promptId: string) => {
+    await trackActivity(promptId, 'copy');
+  };
+
+  const handleRemoveFavorite = async (promptId: string) => {
+    await removeFavorite(promptId);
+  };
+
 
   return (
     <div className="space-y-6">
@@ -102,6 +91,7 @@ export function FavoritesSection() {
                   variant="ghost"
                   size="sm"
                   className="text-rose-500 hover:text-rose-600"
+                  onClick={() => handleRemoveFavorite(prompt.id)}
                 >
                   <Heart className="h-4 w-4 fill-current" />
                 </Button>
@@ -124,11 +114,15 @@ export function FavoritesSection() {
                 </div>
 
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => handleCopy(prompt.id)}
+                  >
                     <Copy className="h-4 w-4 mr-1" />
                     Copiar
                   </Button>
-                  <Button variant="default" size="sm">
+                  <Button variant="default" size="sm" asChild>
                     <Link href={`/prompt/${prompt.id}`} className="flex items-center">
                       <ExternalLink className="h-4 w-4 mr-1" />
                       Ver

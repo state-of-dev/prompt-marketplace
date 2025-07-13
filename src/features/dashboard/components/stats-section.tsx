@@ -2,34 +2,53 @@
 
 import { Card } from '../../../components/ui/card';
 import { Heart, Copy, Eye, TrendingUp } from 'lucide-react';
+import { useDashboard } from '../../../hooks/use-dashboard';
+import { LoadingSpinner } from '../../../components/ui/loading-spinner';
 
 export function StatsSection() {
-  // TODO: Estos datos vendrán de la API
-  const stats = [
+  const { stats, activities, loading, error } = useDashboard();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="p-6 text-center">
+        <p className="text-destructive">{error}</p>
+      </Card>
+    );
+  }
+
+  const statsData = [
     {
       title: 'Prompts Favoritos',
-      value: '24',
+      value: stats?.favorites.toString() || '0',
       change: '+12%',
       icon: Heart,
       color: 'text-rose-500'
     },
     {
       title: 'Prompts Copiados',
-      value: '156',
+      value: stats?.copies.toString() || '0',
       change: '+23%',
       icon: Copy,
       color: 'text-blue-500'
     },
     {
       title: 'Prompts Vistos',
-      value: '89',
+      value: stats?.views.toString() || '0',
       change: '+8%',
       icon: Eye,
       color: 'text-emerald-500'
     },
     {
       title: 'Popularidad',
-      value: '67%',
+      value: `${stats?.popularity || 0}%`,
       change: '+15%',
       icon: TrendingUp,
       color: 'text-amber-500'
@@ -70,20 +89,35 @@ export function StatsSection() {
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Actividad Reciente</h3>
         <div className="space-y-3">
-          {[
-            'Copiaste "React Component Generator"',
-            'Agregaste "Cinema Prompt" a favoritos',
-            'Viste "Marketing Copy Template"',
-            'Copiaste "Backend API Documentation"'
-          ].map((activity, index) => (
-            <div key={index} className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-primary rounded-full"></div>
-              <span className="text-sm">{activity}</span>
-              <span className="text-xs text-muted-foreground ml-auto">
-                Hace {index + 1}h
-              </span>
-            </div>
-          ))}
+          {activities.slice(0, 4).map((activity) => {
+            const formatDate = (timestamp: string) => {
+              const date = new Date(timestamp);
+              const now = new Date();
+              const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+              
+              if (diffInHours < 1) return 'Hace menos de 1h';
+              if (diffInHours < 24) return `Hace ${diffInHours}h`;
+              if (diffInHours < 48) return 'Ayer';
+              return date.toLocaleDateString('es-ES');
+            };
+
+            return (
+              <div key={activity.id} className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-sm">
+                  {activity.action} "{activity.promptTitle}"
+                </span>
+                <span className="text-xs text-muted-foreground ml-auto">
+                  {formatDate(activity.timestamp)}
+                </span>
+              </div>
+            );
+          })}
+          {activities.length === 0 && (
+            <p className="text-sm text-muted-foreground text-center py-4">
+              No hay actividad reciente
+            </p>
+          )}
         </div>
       </Card>
     </div>

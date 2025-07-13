@@ -3,59 +3,27 @@
 import { Card } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
 import { Heart, Copy, Eye, Calendar } from 'lucide-react';
+import { LoadingSpinner } from '../../../components/ui/loading-spinner';
+import { useDashboard } from '../../../hooks/use-dashboard';
 
 export function ActivitySection() {
-  // TODO: Estos datos vendrán de la API
-  const activities = [
-    {
-      id: '1',
-      type: 'copy',
-      action: 'Copiaste',
-      promptTitle: 'React Component Generator',
-      timestamp: '2025-01-13 14:30',
-      category: 'Programadores'
-    },
-    {
-      id: '2', 
-      type: 'favorite',
-      action: 'Agregaste a favoritos',
-      promptTitle: 'Cinema Storyboard Creator',
-      timestamp: '2025-01-13 12:15',
-      category: 'Cineastas'
-    },
-    {
-      id: '3',
-      type: 'view',
-      action: 'Viste',
-      promptTitle: 'Marketing Copy Template',
-      timestamp: '2025-01-13 10:45',
-      category: 'Marketers'
-    },
-    {
-      id: '4',
-      type: 'copy',
-      action: 'Copiaste',
-      promptTitle: 'Backend API Documentation',
-      timestamp: '2025-01-12 16:20',
-      category: 'Programadores'
-    },
-    {
-      id: '5',
-      type: 'favorite',
-      action: 'Agregaste a favoritos',
-      promptTitle: 'Logo Design Brief',
-      timestamp: '2025-01-12 14:10',
-      category: 'Diseñadores'
-    },
-    {
-      id: '6',
-      type: 'view',
-      action: 'Viste',
-      promptTitle: 'Business Strategy Analysis',
-      timestamp: '2025-01-12 11:30',
-      category: 'Consultores'
-    }
-  ];
+  const { activities, loading, error } = useDashboard();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="p-6 text-center">
+        <p className="text-destructive">{error}</p>
+      </Card>
+    );
+  }
 
   const getActivityIcon = (type: string) => {
     switch (type) {
@@ -103,33 +71,43 @@ export function ActivitySection() {
         </p>
       </div>
 
-      <div className="space-y-3">
-        {activities.map((activity) => (
-          <Card key={activity.id} className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                {getActivityIcon(activity.type)}
-                <div>
-                  <p className="font-medium">
-                    {activity.action}{' '}
-                    <span className="text-primary">{activity.promptTitle}</span>
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {formatDate(activity.timestamp)}
-                  </p>
+      {activities.length === 0 ? (
+        <Card className="p-8 text-center">
+          <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg font-semibold mb-2">No hay actividad aún</h3>
+          <p className="text-muted-foreground">
+            Empieza a explorar prompts para ver tu actividad aquí
+          </p>
+        </Card>
+      ) : (
+        <div className="space-y-3">
+          {activities.map((activity) => (
+            <Card key={activity.id} className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  {getActivityIcon(activity.type)}
+                  <div>
+                    <p className="font-medium">
+                      {activity.action}{' '}
+                      <span className="text-primary">{activity.promptTitle}</span>
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDate(activity.timestamp)}
+                    </p>
+                  </div>
                 </div>
+                
+                <Badge 
+                  variant="outline" 
+                  className={getActivityColor(activity.type)}
+                >
+                  {activity.category}
+                </Badge>
               </div>
-              
-              <Badge 
-                variant="outline" 
-                className={getActivityColor(activity.type)}
-              >
-                {activity.category}
-              </Badge>
-            </div>
-          </Card>
-        ))}
-      </div>
+            </Card>
+          ))}
+        </div>
+      )}
 
       <Card className="p-6 bg-muted/50">
         <div className="text-center">
