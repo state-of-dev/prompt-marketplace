@@ -21,7 +21,7 @@ export function RestrictedContent({
   title = "Prompt",
   className 
 }: RestrictedContentProps) {
-  const { user, isAuthenticated, isPremium: userIsPremium, isAnonymous } = useAuth()
+  const { isAuthenticated, isPremium: userIsPremium, isAnonymous } = useAuth()
 
   // Usuario anónimo - solo preview
   if (isAnonymous) {
