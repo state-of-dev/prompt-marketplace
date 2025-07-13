@@ -4,12 +4,13 @@ import { prisma } from '@/lib/prisma'
 // GET /api/prompts/[id] - Obtener prompt por ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const prompt = await prisma.prompt.findUnique({
       where: {
-        id: params.id,
+        id,
         isPublic: true,
       },
       include: {
@@ -38,7 +39,7 @@ export async function GET(
 
     // Incrementar contador de vistas
     await prisma.prompt.update({
-      where: { id: params.id },
+      where: { id },
       data: { views: { increment: 1 } },
     })
 
