@@ -31,7 +31,7 @@ export async function GET() {
         promptCount: tool._count.prompts,
       })
       return acc
-    }, {} as Record<string, any[]>)
+    }, {} as Record<string, Array<typeof aiTools[0] & { promptCount: number }>>)
 
     return NextResponse.json({
       tools: aiTools.map(tool => ({

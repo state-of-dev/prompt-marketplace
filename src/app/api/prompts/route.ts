@@ -15,7 +15,17 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit
 
     // Construir filtros
-    const where: any = {
+    const where: {
+      isPublic: boolean;
+      categoryId?: string;
+      aiToolId?: string;
+      isPremium?: boolean;
+      OR?: Array<{
+        title?: { contains: string; mode: 'insensitive' };
+        description?: { contains: string; mode: 'insensitive' };
+        tags?: { has: string };
+      }>;
+    } = {
       isPublic: true,
     }
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { Prompt, Category, AITool, PaginatedResponse } from '@/types'
 
 interface UsePromptsParams {
@@ -28,7 +28,7 @@ export function usePrompts(params: UsePromptsParams = {}): UsePromptsReturn {
   const [total, setTotal] = useState(0)
   const [hasMore, setHasMore] = useState(false)
 
-  const fetchPrompts = async () => {
+  const fetchPrompts = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -58,11 +58,11 @@ export function usePrompts(params: UsePromptsParams = {}): UsePromptsReturn {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.page, params.limit, params.category, params.aiTool, params.search, params.premium])
 
   useEffect(() => {
     fetchPrompts()
-  }, [params.page, params.limit, params.category, params.aiTool, params.search, params.premium])
+  }, [fetchPrompts])
 
   return {
     prompts,
