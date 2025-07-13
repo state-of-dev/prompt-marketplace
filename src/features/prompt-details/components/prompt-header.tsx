@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
+import { PromptStats } from './prompt-stats';
 import { Prompt, Category, AITool } from '../../../types';
 
 interface PromptHeaderProps {
@@ -78,6 +79,8 @@ export function PromptHeader({ prompt, category, aiTool }: PromptHeaderProps) {
                 </Badge>
               ))}
             </div>
+
+            <PromptStats prompt={prompt} />
           </CardContent>
         </Card>
       </motion.div>
